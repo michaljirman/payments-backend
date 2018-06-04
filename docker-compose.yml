@@ -1,0 +1,24 @@
+version: "3"
+networks:
+  npayments:
+
+services:
+  payments-db:
+    image: mongo
+    networks:
+      - npayments  
+
+  payments:    
+    build: ./src/paymentservice
+    ports:
+      - 8181:8181      
+    depends_on:
+      - payments-db
+    restart: on-failure
+    environment:          
+      - MONGODB_HOST=mongodb://payments-db
+      - MONGODB_DATABASE=payment
+      - MONGODB_CONNECTION_POOL=5
+      - API_PORT=8181
+    networks:
+      - npayments
