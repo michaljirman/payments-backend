@@ -4,7 +4,12 @@
 
 [![GoDoc](https://godoc.org/github.com/michaljirman/payments-backend?status.svg)](https://godoc.org/github.com/michaljirman/payments-backend)
 
-## REST API documentation available in folder ./src/paymentservice/docs
+## REST API documentation 
+
+Available in folder 
+```
+./src/paymentservice/docs
+```
 
 ## Build native binaries
 ```
