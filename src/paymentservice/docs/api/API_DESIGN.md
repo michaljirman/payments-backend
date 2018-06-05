@@ -189,7 +189,7 @@ Create a payment.
 <br>
 <br>
 ---
-
+<div style="page-break-after: always;"></div>
 
 # Show all payments
 
@@ -361,7 +361,7 @@ Show all available payments.
 ---
 <br>
 <br>
-
+<div style="page-break-after: always;"></div>
 
 # Show a single payment
 
@@ -506,6 +506,7 @@ Find and show a single payment by ID.
 <br>
 <br>
 ---
+<div style="page-break-after: always;"></div>
 
 
 # Delete a payment
@@ -580,7 +581,7 @@ Delete a payment from database.
 <br>
 <br>
 ---
-
+<div style="page-break-after: always;"></div>
 
 
 # Update a payment

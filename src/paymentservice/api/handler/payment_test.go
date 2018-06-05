@@ -15,6 +15,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+// TestPaymentFind tests API for find a payment call
 func TestPaymentFind(t *testing.T) {
 
 	repo := payment.NewInmemRepository()
@@ -42,6 +43,7 @@ func TestPaymentFind(t *testing.T) {
 	}
 }
 
+// TestPaymentFindAll tests API for find all payments call
 func TestPaymentFindAll(t *testing.T) {
 
 	repo := payment.NewInmemRepository()
@@ -70,6 +72,7 @@ func TestPaymentFindAll(t *testing.T) {
 	assert.Equal(t, http.StatusOK, res.StatusCode)
 }
 
+// fixture prepares payload from json file
 func fixture(path string) []byte {
 	b, err := ioutil.ReadFile("testdata/fixtures/" + path)
 	if err != nil {
@@ -78,6 +81,7 @@ func fixture(path string) []byte {
 	return b
 }
 
+// TestPaymentCreate tests API for create a payment call
 func TestPaymentCreate(t *testing.T) {
 
 	repo := payment.NewInmemRepository()
@@ -104,6 +108,37 @@ func TestPaymentCreate(t *testing.T) {
 	assert.Equal(t, 1, len(payments))
 }
 
+// TestPaymentDelete tests API for delete a payment call
+func TestPaymentDelete(t *testing.T) {
+
+	repo := payment.NewInmemRepository()
+	service := payment.NewService(repo)
+
+	r := mux.NewRouter()
+	//handlers
+	n := negroni.New(
+		negroni.HandlerFunc(middleware.Cors),
+		negroni.NewLogger(),
+	)
+	//payment
+	MakePaymentHandlers(r, *n, service)
+
+	ts := httptest.NewServer(r)
+	defer ts.Close()
+
+	payments := generateTestingPayments()
+	client := &http.Client{}
+	for _, payment := range payments {
+		_, _ = service.Store(&payment)
+		req, err := http.NewRequest("DELETE", ts.URL+"/v1/payments/"+payment.ID.String(), nil)
+		res, err := client.Do(req)
+		// t.Log(res)
+		assert.Nil(t, err)
+		assert.Equal(t, http.StatusNoContent, res.StatusCode)
+	}
+}
+
+// generateTestingPayments generates slice of testing entity.Payment objects for testing purposes
 func generateTestingPayments() []entity.Payment {
 	return []entity.Payment{
 		entity.Payment{
